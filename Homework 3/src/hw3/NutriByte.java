@@ -40,8 +40,8 @@ public class NutriByte extends Application{
 
 	static final String NUTRIBYTE_PROFILE_PATH = "profiles";  //folder that has profile data files
 
-	static final int NUTRIBYTE_SCREEN_WIDTH = 515;
-	static final int NUTRIBYTE_SCREEN_HEIGHT = 275;
+	static final int NUTRIBYTE_SCREEN_WIDTH = 1015;
+	static final int NUTRIBYTE_SCREEN_HEIGHT = 675;
 
 	@Override
 	public void start(Stage stage) throws Exception {

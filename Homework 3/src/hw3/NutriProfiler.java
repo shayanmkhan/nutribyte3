@@ -3,12 +3,7 @@
 
 package hw3;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 public class NutriProfiler {
-
-	static ObservableList<RecommendedNutrient> recommendedNutrientsList = FXCollections.observableArrayList();  
 	
 	static final int RECOMMENDED_NUTRI_COUNT = 14;  //this includes Protein, Carbohydrate, fiber, and 11 amino acids
 	static final int AGE_GROUP_COUNT = 10; 
@@ -65,11 +60,11 @@ public class NutriProfiler {
 
 	static void createNutriProfile(Person person) {
 		//Reset the recommended nutrients list for each person
-		recommendedNutrientsList.clear();
+		person.recommendedNutrientsList.clear();
 		
 		//Calculate energy requirement and add to list
 		RecommendedNutrient energy = new RecommendedNutrient("208", person.calculateEnergyRequirement());
-		recommendedNutrientsList.add(energy);
+		person.recommendedNutrientsList.add(energy);
 		
 		//Calculate nutrition requirements and add to list
 		float[] recommendedQuantities = person.calculateNutriRequirement();
@@ -80,7 +75,7 @@ public class NutriProfiler {
 			float recommendedQuantity = recommendedQuantities[nutrient.getNutriIndex()];
 			
 			RecommendedNutrient recommendedNutrient = new RecommendedNutrient(nutrientCode, recommendedQuantity);
-			recommendedNutrientsList.add(recommendedNutrient);
+			person.recommendedNutrientsList.add(recommendedNutrient);
 		}
 	}
 }

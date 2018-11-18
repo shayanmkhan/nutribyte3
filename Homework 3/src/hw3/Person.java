@@ -3,6 +3,8 @@
 
 package hw3;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public abstract class Person {
 
@@ -11,6 +13,8 @@ public abstract class Person {
 	float[][] nutriConstantsTable = new float[NutriProfiler.RECOMMENDED_NUTRI_COUNT][NutriProfiler.AGE_GROUP_COUNT];
 
 	NutriProfiler.AgeGroupEnum ageGroup;
+	
+	ObservableList<RecommendedNutrient> recommendedNutrientsList = FXCollections.observableArrayList();
 
 	abstract void initializeNutriConstantsTable();
 	abstract float calculateEnergyRequirement();

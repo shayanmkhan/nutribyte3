@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class TestNutriRecommendations {
 	
-	static Person  person1, person2, person3;
+	static Person person1, person2, person3;
 	static Model model;
 	
 	@BeforeClass
