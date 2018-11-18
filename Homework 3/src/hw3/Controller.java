@@ -65,7 +65,7 @@ public class Controller {
 			
 			//Create NutriProfile and populate TableView
 			NutriProfiler.createNutriProfile(person);
-			NutriByte.view.recommendedNutrientsTableView.setItems(NutriProfiler.recommendedNutrientsList);
+			NutriByte.view.recommendedNutrientsTableView.setItems(person.recommendedNutrientsList);
 		}			
 	}
 
@@ -104,7 +104,7 @@ public class Controller {
 			
 			//Create Nutrient Profile and populate TableView
 			NutriProfiler.createNutriProfile(NutriByte.person);
-			NutriByte.view.recommendedNutrientsTableView.setItems(NutriProfiler.recommendedNutrientsList);
+			NutriByte.view.recommendedNutrientsTableView.setItems(NutriByte.person.recommendedNutrientsList);
 		}
 	}
 

@@ -5,6 +5,7 @@ package hw3;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 
 public abstract class Person {
 
@@ -15,6 +16,8 @@ public abstract class Person {
 	NutriProfiler.AgeGroupEnum ageGroup;
 	
 	ObservableList<RecommendedNutrient> recommendedNutrientsList = FXCollections.observableArrayList();
+	ObservableList<Product> dietProductsList = FXCollections.observableArrayList();
+	ObservableMap<String, RecommendedNutrient> dietNutrientsMap = FXCollections.observableHashMap();
 
 	abstract void initializeNutriConstantsTable();
 	abstract float calculateEnergyRequirement();
