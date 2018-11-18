@@ -13,11 +13,13 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 
 public class Model {
-	static ObservableMap<String, Product> productsMap = FXCollections.observableMap(new HashMap<String, Product>());
-	static ObservableMap<String, Nutrient> nutrientsMap = FXCollections.observableMap(new HashMap<String, Nutrient>());
+	static ObservableMap<String, Product> productsMap = FXCollections.observableHashMap();
+	static ObservableMap<String, Nutrient> nutrientsMap = FXCollections.observableHashMap();
+	ObservableList<Product> searchResultsList = FXCollections.observableArrayList();
 	
 	void readProducts(String filename) {
 		CSVFormat format = CSVFormat.DEFAULT.withFirstRecordAsHeader();

@@ -136,4 +136,9 @@ public class Product {
 			this.nutrientQuantity = new SimpleFloatProperty(nutrientQuantity);
 		}
 	}
+	
+	@Override
+	public String toString() {
+		return this.getProductName() + " by " + this.getManufacturer();
+	}
 }
