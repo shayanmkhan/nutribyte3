@@ -3,8 +3,6 @@
 
 package hw3;
 
-import java.util.HashMap;
-
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -34,7 +32,7 @@ public class Product {
 		servingUom = new SimpleStringProperty();
 		householdSize = new SimpleFloatProperty();
 		householdUom = new SimpleStringProperty();
-		productNutrients = FXCollections.observableMap(new HashMap<String, ProductNutrient>());
+		productNutrients = FXCollections.observableHashMap();
 	}
 	
 	Product(String ndbNumber, String productName, String manufacturer, String ingredients) {
@@ -47,7 +45,7 @@ public class Product {
 		servingUom = new SimpleStringProperty();
 		householdSize = new SimpleFloatProperty();
 		householdUom = new SimpleStringProperty();
-		productNutrients = FXCollections.observableMap(new HashMap<String, ProductNutrient>());
+		productNutrients = FXCollections.observableHashMap();;
 	}
 
 	public String getNdbNumber() {

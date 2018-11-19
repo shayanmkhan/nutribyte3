@@ -72,10 +72,11 @@ public class Controller {
 	class OpenMenuItemHandler implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent event) {
-			//Present file picker dialog, showing only CSV and XML files
+			//Present file picker dialog, showing only CSV and XML files; Set initial directory to profiles folder
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Select file");
 			fileChooser.getExtensionFilters().addAll(new ExtensionFilter("CSV Files", "*.csv"), new ExtensionFilter("XML Files", "*.xml"));
+			fileChooser.setInitialDirectory(new File("profiles"));		
 			
 			//Save chosen filename. If no file is chosen, do nothing.
 			Stage stage = new Stage();
