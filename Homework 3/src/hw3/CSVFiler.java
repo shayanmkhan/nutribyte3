@@ -59,7 +59,7 @@ public class CSVFiler extends DataFiler {
 	//Validates the profile given; returns true if profile is valid, false otherwise
 	boolean validatePersonData(String data) {
 		//Break input string into an array of attributes
-		String[] attributes = data.split(", ");
+		String[] attributes = data.split(",\\s*");
 		
 		//Initialize attribute variables
 		String gender = "", ingredientsToWatch = "";
@@ -117,12 +117,13 @@ public class CSVFiler extends DataFiler {
 		return true;
 	}
 	
+	//Returns true if at least one valid product is found, false otherwise
 	boolean validateProductData(String[] data) {
 		int numValidProducts = 0;
 		
 		//Validate each line of data
 		for(String line : data) {
-			String[] attributes = line.split(", ");
+			String[] attributes = line.split(",\\s*");
 			
 			try {
 				if(attributes.length != 3) throw new InvalidProfileException("Product has wrong number of attributes!");
