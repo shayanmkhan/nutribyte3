@@ -70,38 +70,49 @@ public class CSVFiler extends DataFiler {
 			if(attributes.length < 5) 
 				throw new InvalidProfileException("Profile is missing some data!");
 
-			//Store each attribute in corresponding variable
+			//Store and validate gender
 			gender = attributes[0];
-			age = Float.parseFloat(attributes[1]);
-			weight = Float.parseFloat(attributes[2]);
-			height = Float.parseFloat(attributes[3]);
-			physicalActivityLevel = Float.parseFloat(attributes[4]);
-			
-			//Add ingredients to watch, if they are included
-			if(attributes.length > 5) {
-				StringBuilder sb = new StringBuilder();
-				for(int i = 5; i < attributes.length; i++) {
-					sb.append(attributes[i] + ", ");
-				}
-				sb.setLength(sb.length() - 2);	//Delete trailing comma
-				ingredientsToWatch = sb.toString();
-			}
-			
-			//Check that gender is either "Male" or "Female"
 			if(!gender.equalsIgnoreCase("male") && !gender.equalsIgnoreCase("female")) 
 				throw new InvalidProfileException("Invalid gender! Gender must be \"Male\" or \"Female\"");
 			
-			//Check that no values are negative
-			if(age < 0 || weight < 0 || height < 0 || physicalActivityLevel < 0) 
-				throw new InvalidProfileException("Values cannot be negative!");
-			
-			//Check that physicalActivityLevel is within set of acceptable values
-			if (physicalActivityLevel != 1 && physicalActivityLevel != 1.1f && physicalActivityLevel != 1.25f && physicalActivityLevel != 1.48f) 
-				throw new InvalidProfileException("Invalid physical activity level!");
-			
-		} catch(Exception e) {
+			//Store and validate age, weight, and height
+			try {
+				age = Float.parseFloat(attributes[1]);
+			} catch(NumberFormatException e) {
+				throw new InvalidProfileException("Invalid data for age: " + attributes[1] + "\nAge must be a number!");
+			}
+			try {
+				weight = Float.parseFloat(attributes[2]);
+			} catch(NumberFormatException e) {
+				throw new InvalidProfileException("Invalid data for weight: " + attributes[2] + "\nWeight must be a number!");
+			}
+			try {
+				height = Float.parseFloat(attributes[3]);
+			} catch(NumberFormatException e) {
+				throw new InvalidProfileException("Invalid data for height: " + attributes[3] + "\nHeight must be a number!");
+			}
+
+			//Store and validate physicalActivityLevel
+			physicalActivityLevel = Float.parseFloat(attributes[4]);
+			if (physicalActivityLevel != 1 && physicalActivityLevel != 1.1f && physicalActivityLevel != 1.25f 
+					&& physicalActivityLevel != 1.48f) {
+				throw new InvalidProfileException("Invalid physical activity level: "  + attributes[4] + 
+						"\nMust be: 1, 1.1, 1.25, or 1.48");
+			}
+						
+		} catch(InvalidProfileException e) {
 			System.out.println("Invalid profile received.");
 			return false;
+		}
+		
+		//Add ingredients to watch, if they are included
+		if(attributes.length > 5) {
+			StringBuilder sb = new StringBuilder();
+			for(int i = 5; i < attributes.length; i++) {
+				sb.append(attributes[i] + ", ");
+			}
+			sb.setLength(sb.length() - 2);	//Delete trailing comma
+			ingredientsToWatch = sb.toString();
 		}
 		
 		//Create new person object based on the gender input, and set it as the program's global person
@@ -114,7 +125,7 @@ public class CSVFiler extends DataFiler {
 			NutriByte.view.genderComboBox.setValue("Female");
 		}
 		
-		return true;
+		return true;	
 	}
 	
 	//Returns true if at least one valid product is found, false otherwise
@@ -125,29 +136,48 @@ public class CSVFiler extends DataFiler {
 		for(String line : data) {
 			String[] attributes = line.split(",\\s*");
 			
+			//Initialize attribute variables
+			String ndbNumber = "";
+			float servingSize = 0, householdSize = 0;
+			
 			try {
-				if(attributes.length != 3) throw new InvalidProfileException("Product has wrong number of attributes!");
+				//Check for missing or extra data
+				if(attributes.length != 3) {
+					throw new InvalidProfileException("Cannot read: " + line + 
+							"\nThe data must be in format \"String, Number, Number\" for NDB Number, Serving Size, Household Size");
+				}
 				
-				String ndbNumber = attributes[0];
-				float servingSize = Float.parseFloat(attributes[1]);
-				float householdSize = Float.parseFloat(attributes[2]);
-				
-				//Check that ndbNumber exists in database
+				//Store and validate ndbNumber
+				ndbNumber = attributes[0];
 				if(!Model.productsMap.containsKey(ndbNumber)) 
-					throw new InvalidProfileException("ndbNumber " + ndbNumber + " not found in database!");
+					throw new InvalidProfileException("NDB Number " + ndbNumber + " not found in database!");
 				
-				//Create new product object based on input, and store in person's diet list
-				Product product = Model.productsMap.get(ndbNumber);
-				product.setServingSize(servingSize);
-				product.setHouseholdSize(householdSize);
-				NutriByte.person.dietProductsList.add(product);
+				//Store and validate servingSize and householdSize
+				try {
+					servingSize = Float.parseFloat(attributes[1]);
+				} catch(NumberFormatException e) {
+					throw new InvalidProfileException("Invalid data for serving size: " + attributes[1] + 
+							"\nServing size must be a number!");
+				}
+				try {
+					householdSize = Float.parseFloat(attributes[2]);
+				} catch(NumberFormatException e) {
+					throw new InvalidProfileException("Invalid data for household size: " + attributes[2] + 
+							"\nHousehold size must be a number!");
+				}		
 				
-				numValidProducts++;			
-				
-			} catch(Exception e) {
+			} catch(InvalidProfileException e) {
 				System.out.println("Invalid profile received.");
 				continue;
 			}
+			
+			//Create new product object based on input, and store in person's diet list
+			Product product = Model.productsMap.get(ndbNumber);
+			product.setServingSize(servingSize);
+			product.setHouseholdSize(householdSize);
+			NutriByte.person.dietProductsList.add(product);
+			
+			numValidProducts++;	
 		}
 		
 		if(numValidProducts > 0) return true;
