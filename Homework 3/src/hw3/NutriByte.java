@@ -76,6 +76,7 @@ public class NutriByte extends Application{
 		view.recommendedNutrientUomColumn.setCellValueFactory(recommendedNutrientUomCallback);
 
 		view.createProfileButton.setOnAction(controller.new RecommendNutrientsButtonHandler());
+		view.searchButton.setOnAction(controller.new SearchButtonHandler());
 	}
 	
 	Callback<CellDataFeatures<RecommendedNutrient, String>, ObservableValue<String>> recommendedNutrientNameCallback = new Callback<CellDataFeatures<RecommendedNutrient, String>, ObservableValue<String>>() {

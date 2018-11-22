@@ -4,7 +4,10 @@
 package hw3;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -136,5 +139,79 @@ public class Controller {
 			alert.setGraphic(imageView);
 			alert.showAndWait();
 		}
+	}
+	
+	class SearchButtonHandler implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent event) {
+			String productSearch = NutriByte.view.productSearchTextField.getText();
+			String nutrientSearch = NutriByte.view.nutrientSearchTextField.getText();
+			String ingredientSearch = NutriByte.view.ingredientSearchTextField.getText();
+						
+			List<Product> productMatches = new ArrayList<>();
+			List<Product> nutrientMatches = new ArrayList<>();
+			List<Product> ingredientMatches = new ArrayList<>();
+
+			//By default, copy all products to search result list
+			for(Product product : Model.productsMap.values()) {
+				NutriByte.model.searchResultsList.add(product);
+			}
+			
+			if(productSearch.length() > 0) {
+				for(Product product : Model.productsMap.values()) {
+					if(product.getProductName().toUpperCase().contains(productSearch.toUpperCase())) {
+						productMatches.add(product);
+					}
+				}
+				
+			}
+			else {
+				for(Product product : Model.productsMap.values()) {
+					productMatches.add(product);
+				}
+			}
+			
+			if(nutrientSearch.length() > 0) {
+				String nutrientCode = NutriProfiler.NutriEnum.valueOf(nutrientSearch.toUpperCase()).getNutrientCode();
+				
+				for(Product product : Model.productsMap.values()) {
+					if(product.getProductNutrients().containsKey(nutrientCode)) {
+						nutrientMatches.add(product);
+					}
+				}
+
+			}
+			else {
+				for(Product product : Model.productsMap.values()) {
+					nutrientMatches.add(product);
+				}
+			}
+			
+			if(ingredientSearch.length() > 0) {
+				for(Product product : NutriByte.model.searchResultsList) {
+					if(product.getIngredients().toUpperCase().contains(ingredientSearch.toUpperCase())) {
+						ingredientMatches.add(product);
+					}
+				}
+			}
+			else {
+				for(Product product : Model.productsMap.values()) {
+					ingredientMatches.add(product);
+				}
+			}
+			
+			productMatches.retainAll(nutrientMatches);
+			productMatches.retainAll(ingredientMatches);
+			
+			NutriByte.model.searchResultsList = FXCollections.observableArrayList(productMatches);
+			
+			for(Product product : NutriByte.model.searchResultsList) {
+				System.out.println(product);
+			}
+			System.out.println("\n\n\n");
+			
+		}
+		
 	}
 }
