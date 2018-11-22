@@ -167,8 +167,7 @@ public class Controller {
 			}
 			
 			if(nutrientSearch.length() > 0) {
-				//String nutrientCode = NutriProfiler.NutriEnum.valueOf(nutrientSearch.toUpperCase()).getNutrientCode();
-				
+			
 				for(Product product : Model.productsMap.values()) {
 					for(String nutrientCode : product.getProductNutrients().keySet()) {
 						String nutrientName = Model.nutrientsMap.get(nutrientCode).getNutrientName();
@@ -199,21 +198,15 @@ public class Controller {
 				}
 			}
 			
+			//Keep only the products that match the product, nutrient, and ingredient search terms
 			productMatches.retainAll(nutrientMatches);
 			productMatches.retainAll(ingredientMatches);
 			
 			NutriByte.model.searchResultsList = FXCollections.observableArrayList(productMatches);
-			NutriByte.view.productsComboBox.setItems(NutriByte.model.searchResultsList);			
+			NutriByte.view.productsComboBox.setItems(NutriByte.model.searchResultsList);	
+			NutriByte.view.productsComboBox.getSelectionModel().selectFirst();
 			NutriByte.view.searchResultSizeLabel.setText(productMatches.size() + " product(s) found");
 			
-			
-			/* For testing list
-			for(Product product : NutriByte.model.searchResultsList) {
-				System.out.println(product);
-			}
-			System.out.println(NutriByte.model.searchResultsList.size() + " matches found.");
-			System.out.println("\n\n\n");
-			*/
 		}
 		
 	}
@@ -222,11 +215,14 @@ public class Controller {
 
 		@Override
 		public void handle(ActionEvent event) {
-			NutriByte.view.productSearchTextField.setText(null);
-			NutriByte.view.nutrientSearchTextField.setText(null);
-			NutriByte.view.productSearchTextField.setText(null);
+			//Reset all search fields
+			NutriByte.view.productSearchTextField.setText("");
+			NutriByte.view.nutrientSearchTextField.setText("");
+			NutriByte.view.ingredientSearchTextField.setText("");
+			NutriByte.view.searchResultSizeLabel.setText("");
+			NutriByte.view.productIngredientsTextArea.setText("");
 			NutriByte.view.productsComboBox.setValue(null);
-			
+			NutriByte.view.productsComboBox.setItems(null);
 		}
 		
 	}
