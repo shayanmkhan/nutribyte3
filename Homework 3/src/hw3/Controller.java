@@ -216,4 +216,16 @@ public class Controller {
 		}
 		
 	}
+	
+	class ClearButtonHandler implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent event) {
+			NutriByte.view.productSearchTextField.setText(null);
+			NutriByte.view.nutrientSearchTextField.setText(null);
+			NutriByte.view.productSearchTextField.setText(null);
+			
+		}
+		
+	}
 }

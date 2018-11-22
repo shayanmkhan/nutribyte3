@@ -77,6 +77,7 @@ public class NutriByte extends Application{
 
 		view.createProfileButton.setOnAction(controller.new RecommendNutrientsButtonHandler());
 		view.searchButton.setOnAction(controller.new SearchButtonHandler());
+		view.clearButton.setOnAction(controller.new ClearButtonHandler());
 	}
 	
 	Callback<CellDataFeatures<RecommendedNutrient, String>, ObservableValue<String>> recommendedNutrientNameCallback = new Callback<CellDataFeatures<RecommendedNutrient, String>, ObservableValue<String>>() {
