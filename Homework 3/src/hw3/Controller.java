@@ -6,8 +6,6 @@ package hw3;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import hw3.Product.ProductNutrient;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -205,6 +203,9 @@ public class Controller {
 			productMatches.retainAll(ingredientMatches);
 			
 			NutriByte.model.searchResultsList = FXCollections.observableArrayList(productMatches);
+			
+			NutriByte.view.searchResultSizeLabel.setText(productMatches.size() + " product(s) found");
+			
 			
 			/* For testing list
 			for(Product product : NutriByte.model.searchResultsList) {
