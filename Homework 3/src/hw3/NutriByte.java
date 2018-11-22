@@ -79,11 +79,19 @@ public class NutriByte extends Application{
 		view.searchButton.setOnAction(controller.new SearchButtonHandler());
 		view.clearButton.setOnAction(controller.new ClearButtonHandler());
 		
+		//Add listener for changes in product selection
 		view.productsComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
 			if(view.productsComboBox.getSelectionModel().getSelectedItem() != null) {
-				view.productIngredientsTextArea.setText("Product ingredients: " + view.productsComboBox.getSelectionModel().getSelectedItem().getIngredients());
+				Product currentItem = view.productsComboBox.getSelectionModel().getSelectedItem();
+				
+				view.productIngredientsTextArea.setText("Product ingredients: " + currentItem.getIngredients());
+				view.servingSizeLabel.setText(currentItem.getServingSize() + " " + currentItem.getServingUom());
+				view.householdSizeLabel.setText(currentItem.getHouseholdSize() + " " + currentItem.getHouseholdUom());
+				view.servingUom.setText(currentItem.getServingUom());
+				view.householdServingUom.setText(currentItem.getHouseholdUom());
 			}
 		});
+		
 	}
 	
 	Callback<CellDataFeatures<RecommendedNutrient, String>, ObservableValue<String>> recommendedNutrientNameCallback = new Callback<CellDataFeatures<RecommendedNutrient, String>, ObservableValue<String>>() {
