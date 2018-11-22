@@ -225,6 +225,7 @@ public class Controller {
 			NutriByte.view.productSearchTextField.setText(null);
 			NutriByte.view.nutrientSearchTextField.setText(null);
 			NutriByte.view.productSearchTextField.setText(null);
+			NutriByte.view.productsComboBox.setValue(null);
 			
 		}
 		
