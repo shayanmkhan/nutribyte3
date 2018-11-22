@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import hw3.Product.ProductNutrient;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -173,11 +174,15 @@ public class Controller {
 			}
 			
 			if(nutrientSearch.length() > 0) {
-				String nutrientCode = NutriProfiler.NutriEnum.valueOf(nutrientSearch.toUpperCase()).getNutrientCode();
+				//String nutrientCode = NutriProfiler.NutriEnum.valueOf(nutrientSearch.toUpperCase()).getNutrientCode();
 				
 				for(Product product : Model.productsMap.values()) {
-					if(product.getProductNutrients().containsKey(nutrientCode)) {
-						nutrientMatches.add(product);
+					for(String nutrientCode : product.getProductNutrients().keySet()) {
+						String nutrientName = Model.nutrientsMap.get(nutrientCode).getNutrientName();
+						
+						if(nutrientName.toUpperCase().contains(nutrientSearch.toUpperCase())) {
+							nutrientMatches.add(product);
+						}
 					}
 				}
 
@@ -189,7 +194,7 @@ public class Controller {
 			}
 			
 			if(ingredientSearch.length() > 0) {
-				for(Product product : NutriByte.model.searchResultsList) {
+				for(Product product : Model.productsMap.values()) {
 					if(product.getIngredients().toUpperCase().contains(ingredientSearch.toUpperCase())) {
 						ingredientMatches.add(product);
 					}
@@ -206,11 +211,13 @@ public class Controller {
 			
 			NutriByte.model.searchResultsList = FXCollections.observableArrayList(productMatches);
 			
+			/* For testing list
 			for(Product product : NutriByte.model.searchResultsList) {
 				System.out.println(product);
 			}
+			System.out.println(NutriByte.model.searchResultsList.size() + " matches found.");
 			System.out.println("\n\n\n");
-			
+			*/
 		}
 		
 	}
