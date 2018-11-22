@@ -153,11 +153,6 @@ public class Controller {
 			List<Product> productMatches = new ArrayList<>();
 			List<Product> nutrientMatches = new ArrayList<>();
 			List<Product> ingredientMatches = new ArrayList<>();
-
-			//By default, copy all products to search result list
-			for(Product product : Model.productsMap.values()) {
-				NutriByte.model.searchResultsList.add(product);
-			}
 			
 			if(productSearch.length() > 0) {
 				for(Product product : Model.productsMap.values()) {
