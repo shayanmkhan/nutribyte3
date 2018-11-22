@@ -203,7 +203,7 @@ public class Controller {
 			productMatches.retainAll(ingredientMatches);
 			
 			NutriByte.model.searchResultsList = FXCollections.observableArrayList(productMatches);
-			
+			NutriByte.view.productsComboBox.setItems(NutriByte.model.searchResultsList);			
 			NutriByte.view.searchResultSizeLabel.setText(productMatches.size() + " product(s) found");
 			
 			
