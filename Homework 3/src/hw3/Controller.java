@@ -226,4 +226,49 @@ public class Controller {
 		}
 		
 	}
+	
+	class AddDietButtonHandler implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent event) {
+			Product dietProduct = NutriByte.view.productsComboBox.getSelectionModel().getSelectedItem();
+			String servingSizeInput = NutriByte.view.dietServingSizeTextField.getText();
+			String householdSizeInput = NutriByte.view.dietHouseholdSizeTextField.getText();
+			
+			if(servingSizeInput.length() == 0 && householdSizeInput.length() == 0) {
+				NutriByte.person.dietProductsList.add(dietProduct);
+			}
+			
+			else if(servingSizeInput.length() > 0 && householdSizeInput.length() == 0) {
+				float dietServingSize = Float.parseFloat(servingSizeInput);
+				float numServings = dietServingSize / dietProduct.getServingSize();
+				
+				dietProduct.setServingSize(dietServingSize);
+				dietProduct.setHouseholdSize(dietProduct.getHouseholdSize() * numServings);
+				
+				NutriByte.person.dietProductsList.add(dietProduct);
+			}
+			
+			else if(servingSizeInput.length() == 0 && householdSizeInput.length() > 0) {
+				float dietHouseholdSize = Float.parseFloat(householdSizeInput);
+				float numServings = dietHouseholdSize / dietProduct.getHouseholdSize();
+				
+				dietProduct.setHouseholdSize(dietHouseholdSize);
+				dietProduct.setServingSize(dietProduct.getHouseholdSize() * numServings);
+				
+				NutriByte.person.dietProductsList.add(dietProduct);
+			}
+			
+			else if(servingSizeInput.length() > 0 && householdSizeInput.length() > 0) {
+				float dietServingSize = Float.parseFloat(servingSizeInput);
+				float numServings = dietServingSize / dietProduct.getServingSize();
+				
+				dietProduct.setServingSize(dietServingSize);
+				dietProduct.setHouseholdSize(dietProduct.getHouseholdSize() * numServings);
+				
+				NutriByte.person.dietProductsList.add(dietProduct);
+			}
+		}
+		
+	}
 }

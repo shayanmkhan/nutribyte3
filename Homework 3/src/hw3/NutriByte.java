@@ -85,6 +85,7 @@ public class NutriByte extends Application{
 		view.createProfileButton.setOnAction(controller.new RecommendNutrientsButtonHandler());
 		view.searchButton.setOnAction(controller.new SearchButtonHandler());
 		view.clearButton.setOnAction(controller.new ClearButtonHandler());
+		view.addDietButton.setOnAction(controller.new AddDietButtonHandler());
 		
 		//Add listener for changes in product selection
 		view.productsComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
