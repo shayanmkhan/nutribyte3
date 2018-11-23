@@ -3,11 +3,14 @@
 
 package hw3;
 
+import hw3.Product.ProductNutrient;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn.CellDataFeatures;
@@ -74,6 +77,10 @@ public class NutriByte extends Application{
 		view.recommendedNutrientNameColumn.setCellValueFactory(recommendedNutrientNameCallback);
 		view.recommendedNutrientQuantityColumn.setCellValueFactory(recommendedNutrientQuantityCallback);
 		view.recommendedNutrientUomColumn.setCellValueFactory(recommendedNutrientUomCallback);
+		
+		view.productNutrientNameColumn.setCellValueFactory(productNutrientNameCallback);
+		view.productNutrientQuantityColumn.setCellValueFactory(productNutrientQuantityCallback);
+		view.productNutrientUomColumn.setCellValueFactory(productNutrientUomCallback);
 
 		view.createProfileButton.setOnAction(controller.new RecommendNutrientsButtonHandler());
 		view.searchButton.setOnAction(controller.new SearchButtonHandler());
@@ -89,12 +96,17 @@ public class NutriByte extends Application{
 				view.householdSizeLabel.setText(currentItem.getHouseholdSize() + " " + currentItem.getHouseholdUom());
 				view.servingUom.setText(currentItem.getServingUom());
 				view.householdServingUom.setText(currentItem.getHouseholdUom());
+				
+				ObservableList<ProductNutrient> productNutrients = FXCollections.observableArrayList(currentItem.getProductNutrients().values());
+				view.productNutrientsTableView.setItems(productNutrients);
 			}
 		});
 		
 	}
 	
-	Callback<CellDataFeatures<RecommendedNutrient, String>, ObservableValue<String>> recommendedNutrientNameCallback = new Callback<CellDataFeatures<RecommendedNutrient, String>, ObservableValue<String>>() {
+	//Callbacks for custom cell value factories
+	Callback<CellDataFeatures<RecommendedNutrient, String>, ObservableValue<String>> recommendedNutrientNameCallback = 
+			new Callback<CellDataFeatures<RecommendedNutrient, String>, ObservableValue<String>>() {
 		@Override
 		public ObservableValue<String> call(CellDataFeatures<RecommendedNutrient, String> arg0) {
 			Nutrient nutrient = Model.nutrientsMap.get(arg0.getValue().getNutrientCode());
@@ -102,7 +114,8 @@ public class NutriByte extends Application{
 		}
 	};
 	
-	Callback<CellDataFeatures<RecommendedNutrient, String>, ObservableValue<String>> recommendedNutrientQuantityCallback = new Callback<CellDataFeatures<RecommendedNutrient, String>, ObservableValue<String>>() {
+	Callback<CellDataFeatures<RecommendedNutrient, String>, ObservableValue<String>> recommendedNutrientQuantityCallback = 
+			new Callback<CellDataFeatures<RecommendedNutrient, String>, ObservableValue<String>>() {
 		@Override
 		public ObservableValue<String> call(CellDataFeatures<RecommendedNutrient, String> arg0) {
 			float quantity = arg0.getValue().getNutrientQuantity();
@@ -113,11 +126,51 @@ public class NutriByte extends Application{
 		}
 	};
 	
-	Callback<CellDataFeatures<RecommendedNutrient, String>, ObservableValue<String>> recommendedNutrientUomCallback = new Callback<CellDataFeatures<RecommendedNutrient, String>, ObservableValue<String>>() {
+	Callback<CellDataFeatures<RecommendedNutrient, String>, ObservableValue<String>> recommendedNutrientUomCallback = 
+			new Callback<CellDataFeatures<RecommendedNutrient, String>, ObservableValue<String>>() {
 		@Override
 		public ObservableValue<String> call(CellDataFeatures<RecommendedNutrient, String> arg0) {
 			Nutrient nutrient = Model.nutrientsMap.get(arg0.getValue().getNutrientCode());
 			return nutrient.nutrientUomProperty();
 		}
+	};
+	
+	Callback<CellDataFeatures<ProductNutrient, String>, ObservableValue<String>> productNutrientNameCallback = 
+			new Callback<CellDataFeatures<ProductNutrient, String>, ObservableValue<String>>() {
+
+		@Override
+		public ObservableValue<String> call(CellDataFeatures<ProductNutrient, String> param) {
+			Nutrient nutrient = Model.nutrientsMap.get(param.getValue().getNutrientCode());
+			return nutrient.nutrientNameProperty();
+		}
+
+		
+	};
+	
+	Callback<CellDataFeatures<ProductNutrient, String>, ObservableValue<String>> productNutrientQuantityCallback = 
+			new Callback<CellDataFeatures<ProductNutrient, String>, ObservableValue<String>>() {
+
+		@Override
+		public ObservableValue<String> call(CellDataFeatures<ProductNutrient, String> param) {
+			float quantity = param.getValue().getNutrientQuantity();
+			
+			StringProperty quantityProperty = new SimpleStringProperty(String.format("%.2f", quantity));
+			
+			return quantityProperty;
+		}
+
+		
+	};
+	
+	Callback<CellDataFeatures<ProductNutrient, String>, ObservableValue<String>> productNutrientUomCallback = 
+			new Callback<CellDataFeatures<ProductNutrient, String>, ObservableValue<String>>() {
+
+		@Override
+		public ObservableValue<String> call(CellDataFeatures<ProductNutrient, String> param) {
+			Nutrient nutrient = Model.nutrientsMap.get(param.getValue().getNutrientCode());
+			return nutrient.nutrientUomProperty();
+		}
+
+		
 	};
 }

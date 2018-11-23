@@ -133,6 +133,22 @@ public class Product {
 			this.nutrientCode = new SimpleStringProperty(nutrientCode);
 			this.nutrientQuantity = new SimpleFloatProperty(nutrientQuantity);
 		}
+		
+		public String getNutrientCode () {
+			return nutrientCode.get();
+		}
+		
+		public void setNutrientCode(String nutrientCode) {
+			this.nutrientCode.set(nutrientCode);
+		}
+		
+		public float getNutrientQuantity() {
+			return nutrientQuantity.get();
+		}
+		
+		public void setNutrientQuantity(float nutrientQuantity) {
+			this.nutrientQuantity.set(nutrientQuantity);
+		}
 	}
 	
 	@Override
