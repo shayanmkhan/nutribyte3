@@ -101,4 +101,9 @@ public class Model {
 		}
 	}
 	
+	void writeProfile(String filename) {
+		CSVFiler csvFiler = new CSVFiler();
+		csvFiler.writeFile(filename);
+	}
+	
 }

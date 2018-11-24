@@ -3,15 +3,71 @@
 
 package hw3;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class CSVFiler extends DataFiler {
 
 	@Override
 	public void writeFile(String filename) {
-		return;		
+		String gender = "";
+		if(NutriByte.view.genderComboBox.getValue() == null) {
+			gender =  "None";
+		}
+		if(NutriByte.view.genderComboBox.getValue().equalsIgnoreCase("Male")) gender = "Male";
+		else gender = "Female";
+		
+		//Set values to 0 by default
+		float age = 0;
+		float weight = 0;
+		float height = 0;
+		
+		//Set values only if they are entered
+		if(NutriByte.view.ageTextField.getText().length() != 0) {
+			age = Float.parseFloat(NutriByte.view.ageTextField.getText());
+		}
+		if(NutriByte.view.weightTextField.getText().length() != 0) {
+			weight = Float.parseFloat(NutriByte.view.weightTextField.getText());
+		}
+		if(NutriByte.view.heightTextField.getText().length() != 0) {
+			height = Float.parseFloat(NutriByte.view.heightTextField.getText());
+		}
+		
+		//Set physical activity level to corresponding value in PhysicalActivityEnum. Set to "sedentary" by default.
+		float physicalActivityLevel = 1;
+		if(NutriByte.view.physicalActivityComboBox.getValue() != null) {
+			String activitySelection = NutriByte.view.physicalActivityComboBox.getValue();
+			for(NutriProfiler.PhysicalActivityEnum activityLevel : NutriProfiler.PhysicalActivityEnum.values()) {
+				if(activityLevel.getName().equals(activitySelection)) {
+					physicalActivityLevel = activityLevel.getPhysicalActivityLevel();
+				}
+			}
+		}
+		
+		String ingredientsToWatch = NutriByte.view.ingredientsToWatchTextArea.getText();
+		
+		String personData = gender + ", " + age + ", " + weight + ", " + height + ", " + physicalActivityLevel + ", " 
+				+ ingredientsToWatch;
+		
+		StringBuilder sb = new StringBuilder();
+		for(Product dietProduct : NutriByte.person.dietProductsList) {
+			sb.append(dietProduct.getNdbNumber() + ", " + dietProduct.getServingSize() + ", " + dietProduct.getHouseholdSize() + "\n");
+		}
+		String dietProductsData = sb.toString();
+		
+		BufferedWriter writer = null;
+		try {
+			writer = new BufferedWriter(new FileWriter(filename));
+			writer.write(personData + "\n" + dietProductsData);
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override

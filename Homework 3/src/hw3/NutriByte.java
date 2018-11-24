@@ -71,8 +71,10 @@ public class NutriByte extends Application{
 	void setupBindings() {
 		view.newNutriProfileMenuItem.setOnAction(controller.new NewMenuItemHandler());
 		view.openNutriProfileMenuItem.setOnAction(controller.new OpenMenuItemHandler());
+		view.saveNutriProfileMenuItem.setOnAction(controller.new SaveMenuItemHandler());
 		view.exitNutriProfileMenuItem.setOnAction(event -> Platform.exit());
 		view.aboutMenuItem.setOnAction(controller.new AboutMenuItemHandler());
+		view.closeNutriProfileMenuItem.setOnAction(controller.new CloseMenuItemHandler());
 		
 		view.recommendedNutrientNameColumn.setCellValueFactory(recommendedNutrientNameCallback);
 		view.recommendedNutrientQuantityColumn.setCellValueFactory(recommendedNutrientQuantityCallback);

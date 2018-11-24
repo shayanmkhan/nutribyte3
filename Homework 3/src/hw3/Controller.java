@@ -81,11 +81,10 @@ public class Controller {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Select file");
 			fileChooser.getExtensionFilters().addAll(new ExtensionFilter("CSV Files", "*.csv"), new ExtensionFilter("XML Files", "*.xml"));
-			fileChooser.setInitialDirectory(new File("profiles"));		
+			fileChooser.setInitialDirectory(new File(NutriByte.NUTRIBYTE_PROFILE_PATH));		
 			
 			//Save chosen filename. If no file is chosen, do nothing.
-			Stage stage = new Stage();
-			File file = fileChooser.showOpenDialog(stage);
+			File file = fileChooser.showOpenDialog(new Stage());
 			if(file == null) return;	
 			String filename = file.getAbsolutePath();
 			
@@ -146,6 +145,22 @@ public class Controller {
 			
 		}
 	}
+	
+	class SaveMenuItemHandler implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent event) {
+			FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save Profile");
+            File file = fileChooser.showSaveDialog(new Stage());
+            
+            if(file == null) return;
+            
+            NutriByte.model.writeProfile(file.getAbsolutePath());
+			
+		}
+		
+	}
 
 	class AboutMenuItemHandler implements EventHandler<ActionEvent> {
 		@Override
@@ -163,6 +178,15 @@ public class Controller {
 			alert.setGraphic(imageView);
 			alert.showAndWait();
 		}
+	}
+	
+	class CloseMenuItemHandler implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent event) {
+			NutriByte.view.root.setCenter(NutriByte.view.setupWelcomeScene());
+		}
+		
 	}
 	
 	class SearchButtonHandler implements EventHandler<ActionEvent> {
