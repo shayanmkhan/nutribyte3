@@ -6,6 +6,8 @@ package hw3;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import hw3.Product.ProductNutrient;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -234,14 +236,16 @@ public class Controller {
 			Product dietProduct = NutriByte.view.productsComboBox.getSelectionModel().getSelectedItem();
 			String servingSizeInput = NutriByte.view.dietServingSizeTextField.getText();
 			String householdSizeInput = NutriByte.view.dietHouseholdSizeTextField.getText();
+			float numServings = 0;
 			
 			if(servingSizeInput.length() == 0 && householdSizeInput.length() == 0) {
+				numServings = 1;
 				NutriByte.person.dietProductsList.add(dietProduct);
 			}
 			
 			else if(servingSizeInput.length() > 0 && householdSizeInput.length() == 0) {
 				float dietServingSize = Float.parseFloat(servingSizeInput);
-				float numServings = dietServingSize / dietProduct.getServingSize();
+				numServings = dietServingSize / dietProduct.getServingSize();
 				
 				dietProduct.setServingSize(dietServingSize);
 				dietProduct.setHouseholdSize(dietProduct.getHouseholdSize() * numServings);
@@ -251,7 +255,7 @@ public class Controller {
 			
 			else if(servingSizeInput.length() == 0 && householdSizeInput.length() > 0) {
 				float dietHouseholdSize = Float.parseFloat(householdSizeInput);
-				float numServings = dietHouseholdSize / dietProduct.getHouseholdSize();
+				numServings = dietHouseholdSize / dietProduct.getHouseholdSize();
 				
 				dietProduct.setHouseholdSize(dietHouseholdSize);
 				dietProduct.setServingSize(dietProduct.getHouseholdSize() * numServings);
@@ -261,14 +265,19 @@ public class Controller {
 			
 			else if(servingSizeInput.length() > 0 && householdSizeInput.length() > 0) {
 				float dietServingSize = Float.parseFloat(servingSizeInput);
-				float numServings = dietServingSize / dietProduct.getServingSize();
+				numServings = dietServingSize / dietProduct.getServingSize();
 				
 				dietProduct.setServingSize(dietServingSize);
 				dietProduct.setHouseholdSize(dietProduct.getHouseholdSize() * numServings);
 				
 				NutriByte.person.dietProductsList.add(dietProduct);
 			}
+			
+			NutriByte.person.populateDietNutrientMap(numServings);
+			
+			NutriByte.view.nutriChart.updateChart();
 		}
+		
 		
 	}
 }

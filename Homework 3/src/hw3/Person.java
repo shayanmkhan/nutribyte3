@@ -66,4 +66,27 @@ public abstract class Person {
 		
 		return requirements;
 	}
+	
+	void populateDietNutrientMap(float numServings) {
+		for(Product dietProduct : dietProductsList) {
+			for(Product.ProductNutrient nutrient : dietProduct.getProductNutrients().values())  {
+				if(dietNutrientsMap.containsKey(nutrient.getNutrientCode()) == false) {
+					float nutrientQuantity = nutrient.getNutrientQuantity() * numServings;
+					
+					RecommendedNutrient rn = new RecommendedNutrient(nutrient.getNutrientCode(), nutrientQuantity);
+					
+					dietNutrientsMap.put(nutrient.getNutrientCode(), rn);
+					
+				}
+				
+				else {
+					float nutrientQuantity = nutrient.getNutrientQuantity() * numServings;
+					
+					float totalQuantity = dietNutrientsMap.get(nutrient.getNutrientCode()).getNutrientQuantity() + nutrientQuantity;
+					
+					dietNutrientsMap.get(nutrient.getNutrientCode()).setNutrientQuantity(totalQuantity);
+				}
+			}
+		}
+	}
 }
