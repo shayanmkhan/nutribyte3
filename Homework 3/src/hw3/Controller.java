@@ -295,9 +295,14 @@ public class Controller {
 			
 			NutriByte.person.dietProductsList.remove(dietProduct);
 			
-			NutriByte.person.populateDietNutrientMap();
-			NutriByte.view.dietProductsTableView.setItems(NutriByte.person.dietProductsList);
-			NutriByte.view.nutriChart.updateChart();
+			if(NutriByte.person.dietProductsList.size() > 0) {
+				NutriByte.person.populateDietNutrientMap();
+				NutriByte.view.dietProductsTableView.setItems(NutriByte.person.dietProductsList);
+				NutriByte.view.nutriChart.updateChart();
+			}
+			else {
+				NutriByte.view.nutriChart.clearChart();
+			}
 			
 		}
 		
