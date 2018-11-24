@@ -81,6 +81,14 @@ public class NutriByte extends Application{
 		view.productNutrientNameColumn.setCellValueFactory(productNutrientNameCallback);
 		view.productNutrientQuantityColumn.setCellValueFactory(productNutrientQuantityCallback);
 		view.productNutrientUomColumn.setCellValueFactory(productNutrientUomCallback);
+		
+		/*
+		view.dietProductNameColumn.setCellValueFactory(dietProductNameCallback);
+		view.dietServingSizeColumn.setCellValueFactory(dietProductServingSizeCallback);
+		view.dietServingUomColumn.setCellValueFactory(dietProductServingUomCallback);
+		view.dietHouseholdSizeColumn.setCellValueFactory(dietProductHouseholdSizeCallback);
+		view.dietHouseholdUomColumn.setCellValueFactory(dietProductHouseholdUomCallback);
+		*/
 
 		view.createProfileButton.setOnAction(controller.new RecommendNutrientsButtonHandler());
 		view.searchButton.setOnAction(controller.new SearchButtonHandler());
@@ -174,4 +182,5 @@ public class NutriByte extends Application{
 
 		
 	};
+	
 }

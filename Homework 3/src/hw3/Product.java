@@ -55,6 +55,10 @@ public class Product {
 	public void setNdbNumber(String ndbNumber) {
 		this.ndbNumber.set(ndbNumber);
 	}
+	
+	public StringProperty ndbNumberProperty() {
+		return ndbNumber;
+	}
 
 	public String getProductName() {
 		return productName.get();
@@ -62,6 +66,10 @@ public class Product {
 
 	public void setProductName(String productName) {
 		this.productName.set(productName);
+	}
+	
+	public StringProperty productNameProperty() {
+		return productName;
 	}
 
 	public String getManufacturer() {
@@ -71,6 +79,10 @@ public class Product {
 	public void setManufacturer(String manufacturer) {
 		this.manufacturer.set(manufacturer);
 	}
+	
+	public StringProperty manufacturerProperty() {
+		return manufacturer;
+	}
 
 	public String getIngredients() {
 		return ingredients.get();
@@ -78,6 +90,10 @@ public class Product {
 
 	public void setIngredients(String ingredients) {
 		this.ingredients.set(ingredients);
+	}
+	
+	public StringProperty ingredientsProperty() {
+		return ingredients;
 	}
 
 	public float getServingSize() {
@@ -87,6 +103,10 @@ public class Product {
 	public void setServingSize(float servingSize) {
 		this.servingSize.set(servingSize);;
 	}
+	
+	public FloatProperty servingSizeProperty() {
+		return servingSize;
+	}
 
 	public String getServingUom() {
 		return servingUom.get();
@@ -94,6 +114,10 @@ public class Product {
 
 	public void setServingUom(String servingUom) {
 		this.servingUom.set(servingUom);
+	}
+	
+	public StringProperty servingUomProperty() {
+		return servingUom;
 	}
 
 	public float getHouseholdSize() {
@@ -103,6 +127,10 @@ public class Product {
 	public void setHouseholdSize(float householdSize) {
 		this.householdSize.set(householdSize);;
 	}
+	
+	public FloatProperty householdSizeProperty() {
+		return householdSize;
+	}
 
 	public String getHouseholdUom() {
 		return householdUom.get();
@@ -110,6 +138,10 @@ public class Product {
 
 	public void setHouseholdUom(String householdUom) {
 		this.householdUom.set(householdUom);
+	}
+	
+	public StringProperty householdUomProperty() {
+		return householdUom;
 	}
 	
 	public void addProductNutrient(String nutrientCode, ProductNutrient productNutrient) {

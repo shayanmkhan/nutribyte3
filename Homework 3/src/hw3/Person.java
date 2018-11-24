@@ -67,11 +67,16 @@ public abstract class Person {
 		return requirements;
 	}
 	
-	void populateDietNutrientMap(float numServings) {
+	void populateDietNutrientMap() {
+		//Re-populate the map each time
+		dietNutrientsMap.clear();
+		
 		for(Product dietProduct : dietProductsList) {
 			for(Product.ProductNutrient nutrient : dietProduct.getProductNutrients().values())  {
+				
+				//If the nutrient isn't in the map yet, add it
 				if(dietNutrientsMap.containsKey(nutrient.getNutrientCode()) == false) {
-					float nutrientQuantity = nutrient.getNutrientQuantity() * numServings;
+					float nutrientQuantity = nutrient.getNutrientQuantity() * dietProduct.getServingSize() / 100;
 					
 					RecommendedNutrient rn = new RecommendedNutrient(nutrient.getNutrientCode(), nutrientQuantity);
 					
@@ -79,8 +84,9 @@ public abstract class Person {
 					
 				}
 				
+				//If the nutrient is already in the map, add to its existing quantity
 				else {
-					float nutrientQuantity = nutrient.getNutrientQuantity() * numServings;
+					float nutrientQuantity = nutrient.getNutrientQuantity() * dietProduct.getServingSize() / 100;
 					
 					float totalQuantity = dietNutrientsMap.get(nutrient.getNutrientCode()).getNutrientQuantity() + nutrientQuantity;
 					

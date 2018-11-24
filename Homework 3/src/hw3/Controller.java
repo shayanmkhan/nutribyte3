@@ -67,6 +67,8 @@ public class Controller {
 				person = new Female(age, weight, height, physicalActivityLevel, ingredientsToWatch);
 			}
 			
+			NutriByte.person = person;	
+			
 			//Create NutriProfile and populate TableView
 			NutriProfiler.createNutriProfile(person);
 			NutriByte.view.recommendedNutrientsTableView.setItems(person.recommendedNutrientsList);
@@ -121,6 +123,7 @@ public class Controller {
 			NutriByte.view.root.setCenter(NutriByte.view.nutriTrackerPane);
 			NutriByte.view.initializePrompts();
 			NutriByte.view.recommendedNutrientsTableView.getItems().clear();
+			
 		}
 	}
 
@@ -258,7 +261,7 @@ public class Controller {
 				numServings = dietHouseholdSize / dietProduct.getHouseholdSize();
 				
 				dietProduct.setHouseholdSize(dietHouseholdSize);
-				dietProduct.setServingSize(dietProduct.getHouseholdSize() * numServings);
+				dietProduct.setServingSize(dietProduct.getServingSize() * numServings);
 				
 				NutriByte.person.dietProductsList.add(dietProduct);
 			}
@@ -273,8 +276,9 @@ public class Controller {
 				NutriByte.person.dietProductsList.add(dietProduct);
 			}
 			
-			NutriByte.person.populateDietNutrientMap(numServings);
+			NutriByte.person.populateDietNutrientMap();
 			
+			NutriByte.view.dietProductsTableView.setItems(NutriByte.person.dietProductsList);
 			NutriByte.view.nutriChart.updateChart();
 		}
 		
