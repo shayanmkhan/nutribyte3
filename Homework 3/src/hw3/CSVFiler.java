@@ -180,13 +180,7 @@ public class CSVFiler extends DataFiler {
 			numValidProducts++;	
 		}
 		
-		if(numValidProducts > 0) {
-			NutriByte.person.populateDietNutrientMap();
-			NutriByte.view.dietProductsTableView.setItems(NutriByte.person.dietProductsList);
-			
-			NutriByte.view.nutriChart.updateChart();
-			return true;
-		}
+		if(numValidProducts > 0) return true;
 		else return false;
 	}
 

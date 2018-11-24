@@ -7,7 +7,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import hw3.Product.ProductNutrient;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -112,6 +111,11 @@ public class Controller {
 			//Create Nutrient Profile and populate TableView
 			NutriProfiler.createNutriProfile(NutriByte.person);
 			NutriByte.view.recommendedNutrientsTableView.setItems(NutriByte.person.recommendedNutrientsList);
+			
+			//Populate diet products table and NutriChart
+			NutriByte.person.populateDietNutrientMap();
+			NutriByte.view.dietProductsTableView.setItems(NutriByte.person.dietProductsList);
+			NutriByte.view.nutriChart.updateChart();
 		}
 	}
 
@@ -281,7 +285,21 @@ public class Controller {
 			NutriByte.view.dietProductsTableView.setItems(NutriByte.person.dietProductsList);
 			NutriByte.view.nutriChart.updateChart();
 		}
-		
+	}
+	
+	class RemoveDietButtonHandler implements EventHandler<ActionEvent> {
+
+		@Override
+		public void handle(ActionEvent event) {
+			Product dietProduct = NutriByte.view.dietProductsTableView.getSelectionModel().getSelectedItem();
+			
+			NutriByte.person.dietProductsList.remove(dietProduct);
+			
+			NutriByte.person.populateDietNutrientMap();
+			NutriByte.view.dietProductsTableView.setItems(NutriByte.person.dietProductsList);
+			NutriByte.view.nutriChart.updateChart();
+			
+		}
 		
 	}
 }
