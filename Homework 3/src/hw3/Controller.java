@@ -127,6 +127,22 @@ public class Controller {
 			NutriByte.view.root.setCenter(NutriByte.view.nutriTrackerPane);
 			NutriByte.view.initializePrompts();
 			NutriByte.view.recommendedNutrientsTableView.getItems().clear();
+			NutriByte.view.productSearchTextField.setText("");
+			NutriByte.view.nutrientSearchTextField.setText("");
+			NutriByte.view.ingredientSearchTextField.setText("");
+			NutriByte.view.searchResultSizeLabel.setText("");
+			NutriByte.view.productIngredientsTextArea.setText("");
+			NutriByte.view.productsComboBox.setValue(null);
+			NutriByte.view.productsComboBox.setItems(null);
+			NutriByte.view.productNutrientsTableView.getItems().clear();
+			NutriByte.view.servingSizeLabel.setText("");
+			NutriByte.view.householdSizeLabel.setText("");
+			NutriByte.view.servingUom.setText("");
+			NutriByte.view.householdServingUom.setText("");
+			NutriByte.view.productNutrientsTableView.getItems().clear();
+			NutriByte.view.dietProductsTableView.getItems().clear();
+			NutriByte.view.nutriChart.clearChart();
+			
 			
 		}
 	}
@@ -232,6 +248,11 @@ public class Controller {
 			NutriByte.view.productIngredientsTextArea.setText("");
 			NutriByte.view.productsComboBox.setValue(null);
 			NutriByte.view.productsComboBox.setItems(null);
+			NutriByte.view.productNutrientsTableView.getItems().clear();
+			NutriByte.view.servingSizeLabel.setText("");
+			NutriByte.view.householdSizeLabel.setText("");
+			NutriByte.view.servingUom.setText("");
+			NutriByte.view.householdServingUom.setText("");
 		}
 		
 	}
