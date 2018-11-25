@@ -150,6 +150,9 @@ public class Controller {
 
 		@Override
 		public void handle(ActionEvent event) {
+			
+			if(validatePersonData() == false) return;
+			
 			FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save Profile");
             File file = fileChooser.showSaveDialog(new Stage());
@@ -350,6 +353,58 @@ public class Controller {
 			}
 			
 		}
+		
+	}
+	
+	boolean validatePersonData() {
+		try {
+			//Validate gender
+			if(NutriByte.view.genderComboBox.getValue() == null)
+				throw new InvalidProfileException("Must select a gender!");
+
+			//Validate age
+			try {
+				String ageText = NutriByte.view.ageTextField.getText();
+				if(ageText.length() == 0) throw new InvalidProfileException("Must enter an age!");
+				
+				float age = Float.parseFloat(ageText);
+				if(age <= 0) throw new InvalidProfileException("Age must be positive!");
+				
+			} catch(NumberFormatException e) {
+				throw new InvalidProfileException("Age must be a number!");
+			}
+			
+			//Validate weight
+			try {
+				String weightText = NutriByte.view.weightTextField.getText();
+				if(weightText.length() == 0) throw new InvalidProfileException("Must enter a weight!");
+				
+				float weight = Float.parseFloat(weightText);
+				if(weight <= 0) throw new InvalidProfileException("Weight must be positive!");
+				
+			} catch(NumberFormatException e) {
+				throw new InvalidProfileException("Weight must be a number!");
+			}
+			
+			//Validate height
+			try {
+				String heightText = NutriByte.view.heightTextField.getText();
+				if(heightText.length() == 0) throw new InvalidProfileException("Must enter a height!");
+				
+				float height = Float.parseFloat(heightText);
+				if(height <= 0) throw new InvalidProfileException("Height must be positive!");
+				
+			} catch(NumberFormatException e) {
+				throw new InvalidProfileException("Height must be a number!");
+			}
+			
+			
+		} catch(InvalidProfileException e) {
+			System.out.println("Invalid profile entered.");
+			return false;
+		}
+		
+		return true;
 		
 	}
 }
