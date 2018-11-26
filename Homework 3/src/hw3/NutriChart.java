@@ -1,3 +1,6 @@
+//Name: Shayan Khan
+//AndrewID: shayank
+
 package hw3;
 
 import java.util.ArrayList;
