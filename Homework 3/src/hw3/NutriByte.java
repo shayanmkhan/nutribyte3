@@ -27,7 +27,6 @@ public class NutriByte extends Application{
 	static View view = new View();		//made static to make accessible in the controller
 	static Person person;				//made static to make accessible in the controller
 	
-	
 	Controller controller = new Controller();	//all event handlers 
 
 	/**Uncomment the following three lines if you want to try out the full-size data files */
@@ -108,8 +107,9 @@ public class NutriByte extends Application{
 			}
 		});
 		
+		//Add listeners to update Recommended Nutrient Table in real time
 		view.genderComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-			updateRecommendedNutrientsTable();
+			updateNutriProfile();
 		});
 		
 		view.ageTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -119,7 +119,7 @@ public class NutriByte extends Application{
 				}
 				else {
 					view.ageTextField.setStyle("-fx-text-fill: black;");
-					updateRecommendedNutrientsTable();
+					updateNutriProfile();
 				}
 			}
 			
@@ -132,7 +132,7 @@ public class NutriByte extends Application{
 				}
 				else {
 					view.weightTextField.setStyle("-fx-text-fill: black;");
-					updateRecommendedNutrientsTable();
+					updateNutriProfile();
 				}
 			}
 		});
@@ -144,13 +144,13 @@ public class NutriByte extends Application{
 				}
 				else {
 					view.heightTextField.setStyle("-fx-text-fill: black;");
-					updateRecommendedNutrientsTable();
+					updateNutriProfile();
 				}
 			}
 		});
 		
 		view.physicalActivityComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-			updateRecommendedNutrientsTable();
+			updateNutriProfile();
 		});
 		
 	}
@@ -225,6 +225,7 @@ public class NutriByte extends Application{
 		
 	};
 	
+	//Validation functions for each UI element
 	boolean validateAge() {
 		try {
 			String ageText = view.ageTextField.getText();
@@ -270,12 +271,14 @@ public class NutriByte extends Application{
 		}
 	}
 	
-	void updateRecommendedNutrientsTable() {
+	void updateNutriProfile() {		
 		if(view.genderComboBox.getValue() != null && validateAge() && validateWeight() && validateHeight()) {
+			//Store person attributes given by user
 			String gender = NutriByte.view.genderComboBox.getValue();
 			float age = Float.parseFloat(NutriByte.view.ageTextField.getText());
 			float weight = Float.parseFloat(NutriByte.view.weightTextField.getText());
 			float height = Float.parseFloat(NutriByte.view.heightTextField.getText());
+			String ingredientsToWatch = NutriByte.view.ingredientsToWatchTextArea.getText();
 			
 			//Set physical activity level to corresponding value in PhysicalActivityEnum.
 			float physicalActivityLevel = 1;
@@ -286,7 +289,12 @@ public class NutriByte extends Application{
 				}
 			}
 			
-			String ingredientsToWatch = NutriByte.view.ingredientsToWatchTextArea.getText();
+			//If person has an existing diet products list, save it
+			ObservableList<Product> existingDietProducts = null;
+			try {
+				existingDietProducts = NutriByte.person.dietProductsList;
+			} catch (NullPointerException e) {}
+			
 			
 			//Create Male or Female object based on input
 			if(gender.equalsIgnoreCase("male")) {
@@ -299,7 +307,15 @@ public class NutriByte extends Application{
 			//Create NutriProfile and populate TableView
 			NutriProfiler.createNutriProfile(NutriByte.person);
 			NutriByte.view.recommendedNutrientsTableView.setItems(NutriByte.person.recommendedNutrientsList);
+
+			//If person had an existing diet products list, copy it over
+			if(existingDietProducts != null) {
+				NutriByte.person.dietProductsList = existingDietProducts;
+				NutriByte.view.dietProductsTableView.setItems(NutriByte.person.dietProductsList);
+				
+			}
 			
+			//Update chart
 			NutriByte.person.populateDietNutrientMap();
 			NutriByte.view.nutriChart.updateChart();
 		}

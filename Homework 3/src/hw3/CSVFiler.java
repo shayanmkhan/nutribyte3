@@ -165,9 +165,7 @@ public class CSVFiler extends DataFiler {
 	}
 	
 	//Returns true if at least one valid product is found, false otherwise
-	boolean validateProductData(String[] data) {
-		int numValidProducts = 0;
-		
+	void validateProductData(String[] data) {
 		//Validate each line of data
 		for(String line : data) {
 			String[] attributes = line.split(",\\s*");
@@ -212,12 +210,8 @@ public class CSVFiler extends DataFiler {
 			product.setServingSize(servingSize);
 			product.setHouseholdSize(householdSize);
 			NutriByte.person.dietProductsList.add(product);
-			
-			numValidProducts++;	
 		}
-		
-		if(numValidProducts > 0) return true;
-		else return false;
+
 	}
 
 }

@@ -72,13 +72,13 @@ public class Controller {
 			if(file == null) return;	
 			String filename = file.getAbsolutePath();
 			
-			//Switch to main program window and clear all entries
-			NutriByte.view.root.setCenter(NutriByte.view.nutriTrackerPane);
-			NutriByte.view.initializePrompts();
-			NutriByte.view.recommendedNutrientsTableView.getItems().clear();
+			//Clear any existing UI elements
+			clearView();
 			
-			//Read profile from file into model
-			NutriByte.model.readProfiles(filename);	
+			//Read profile from file into model and display its info. If it's invalid, do nothing.
+			if(NutriByte.model.readProfiles(filename) == true) 
+				NutriByte.view.root.setCenter(NutriByte.view.nutriTrackerPane);
+			else return;
 		
 			//Set all GUI elements based on profile
 			NutriByte.view.ageTextField.setText(Float.toString(NutriByte.person.age));
@@ -106,27 +106,9 @@ public class Controller {
 
 		@Override
 		public void handle(ActionEvent event) {
-			//Set up view, and clear any existing items
+			//Clear any existing UI items and present main view
+			clearView();
 			NutriByte.view.root.setCenter(NutriByte.view.nutriTrackerPane);
-			NutriByte.view.initializePrompts();
-			NutriByte.view.recommendedNutrientsTableView.getItems().clear();
-			NutriByte.view.productSearchTextField.setText("");
-			NutriByte.view.nutrientSearchTextField.setText("");
-			NutriByte.view.ingredientSearchTextField.setText("");
-			NutriByte.view.searchResultSizeLabel.setText("");
-			NutriByte.view.productIngredientsTextArea.setText("");
-			NutriByte.view.productsComboBox.setValue(null);
-			NutriByte.view.productsComboBox.setItems(null);
-			NutriByte.view.productNutrientsTableView.getItems().clear();
-			NutriByte.view.servingSizeLabel.setText("");
-			NutriByte.view.householdSizeLabel.setText("");
-			NutriByte.view.servingUom.setText("");
-			NutriByte.view.householdServingUom.setText("");
-			NutriByte.view.productNutrientsTableView.getItems().clear();
-			NutriByte.view.dietProductsTableView.getItems().clear();
-			NutriByte.view.nutriChart.clearChart();
-			
-			
 		}
 	}
 	
@@ -135,16 +117,20 @@ public class Controller {
 		@Override
 		public void handle(ActionEvent event) {
 			
+			//If input isn't valid, do nothing
 			if(validatePersonData() == false) return;
 			
+			//Allow user to select file name
 			FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save Profile");
             fileChooser.setInitialDirectory(new File(NutriByte.NUTRIBYTE_PROFILE_PATH));
             fileChooser.getExtensionFilters().add(new ExtensionFilter("CSV File", "*.csv"));
             File file = fileChooser.showSaveDialog(new Stage());
             
+            //If user clicks cancel, do nothing
             if(file == null) return;
             
+            //Save file
             NutriByte.model.writeProfile(file.getAbsolutePath());
 			
 		}
@@ -173,6 +159,7 @@ public class Controller {
 
 		@Override
 		public void handle(ActionEvent event) {
+			clearView();
 			NutriByte.view.root.setCenter(NutriByte.view.setupWelcomeScene());
 		}
 		
@@ -190,6 +177,7 @@ public class Controller {
 			List<Product> nutrientMatches = new ArrayList<>();
 			List<Product> ingredientMatches = new ArrayList<>();
 			
+			//If product search term is included, add all matching products to list. If not included, add all products to list.
 			if(productSearch.length() > 0) {
 				for(Product product : Model.productsMap.values()) {
 					if(product.getProductName().toUpperCase().contains(productSearch.toUpperCase())) {
@@ -204,6 +192,7 @@ public class Controller {
 				}
 			}
 			
+			//If nutrient search term is included, add all matching products to list. If not included, add all products to list.
 			if(nutrientSearch.length() > 0) {
 			
 				for(Product product : Model.productsMap.values()) {
@@ -223,6 +212,7 @@ public class Controller {
 				}
 			}
 			
+			//If product search term is included, add all matching products to list. If not included, add all products to list.
 			if(ingredientSearch.length() > 0) {
 				for(Product product : Model.productsMap.values()) {
 					if(product.getIngredients().toUpperCase().contains(ingredientSearch.toUpperCase())) {
@@ -240,6 +230,7 @@ public class Controller {
 			productMatches.retainAll(nutrientMatches);
 			productMatches.retainAll(ingredientMatches);
 			
+			//Display values in UI
 			NutriByte.model.searchResultsList = FXCollections.observableArrayList(productMatches);
 			NutriByte.view.productsComboBox.setItems(NutriByte.model.searchResultsList);	
 			NutriByte.view.productsComboBox.getSelectionModel().selectFirst();
@@ -279,11 +270,13 @@ public class Controller {
 			String householdSizeInput = NutriByte.view.dietHouseholdSizeTextField.getText();
 			float numServings = 0;
 			
+			//If user does not input serving or household size, use one serving
 			if(servingSizeInput.length() == 0 && householdSizeInput.length() == 0) {
 				numServings = 1;
 				NutriByte.person.dietProductsList.add(dietProduct);
 			}
 			
+			//If user enters only serving size, use it to calcualte corresponding household size
 			else if(servingSizeInput.length() > 0 && householdSizeInput.length() == 0) {
 				float dietServingSize = Float.parseFloat(servingSizeInput);
 				numServings = dietServingSize / dietProduct.getServingSize();
@@ -294,6 +287,7 @@ public class Controller {
 				NutriByte.person.dietProductsList.add(dietProduct);
 			}
 			
+			//If user enters only household size, use it to calculate corresponding serving size
 			else if(servingSizeInput.length() == 0 && householdSizeInput.length() > 0) {
 				float dietHouseholdSize = Float.parseFloat(householdSizeInput);
 				numServings = dietHouseholdSize / dietProduct.getHouseholdSize();
@@ -304,6 +298,7 @@ public class Controller {
 				NutriByte.person.dietProductsList.add(dietProduct);
 			}
 			
+			//If user enters both, ignore hosuehold size and use serving size input for calculations
 			else if(servingSizeInput.length() > 0 && householdSizeInput.length() > 0) {
 				float dietServingSize = Float.parseFloat(servingSizeInput);
 				numServings = dietServingSize / dietProduct.getServingSize();
@@ -314,8 +309,8 @@ public class Controller {
 				NutriByte.person.dietProductsList.add(dietProduct);
 			}
 			
+			//Update UI
 			NutriByte.view.dietProductsTableView.setItems(NutriByte.person.dietProductsList);
-			
 			NutriByte.person.populateDietNutrientMap();
 			NutriByte.view.nutriChart.updateChart();
 		}
@@ -325,10 +320,11 @@ public class Controller {
 
 		@Override
 		public void handle(ActionEvent event) {
+			//Remove selected product from diet product list
 			Product dietProduct = NutriByte.view.dietProductsTableView.getSelectionModel().getSelectedItem();
-			
 			NutriByte.person.dietProductsList.remove(dietProduct);
 			
+			//Repopulate table and chart
 			if(NutriByte.person.dietProductsList.size() > 0) {
 				NutriByte.person.populateDietNutrientMap();
 				NutriByte.view.dietProductsTableView.setItems(NutriByte.person.dietProductsList);
@@ -392,5 +388,26 @@ public class Controller {
 		
 		return true;
 		
+	}
+	
+	//Clears all items in main view
+	void clearView() {
+		NutriByte.view.initializePrompts();
+		NutriByte.view.recommendedNutrientsTableView.getItems().clear();
+		NutriByte.view.productSearchTextField.setText("");
+		NutriByte.view.nutrientSearchTextField.setText("");
+		NutriByte.view.ingredientSearchTextField.setText("");
+		NutriByte.view.searchResultSizeLabel.setText("");
+		NutriByte.view.productIngredientsTextArea.setText("");
+		NutriByte.view.productsComboBox.setValue(null);
+		NutriByte.view.productsComboBox.setItems(null);
+		NutriByte.view.productNutrientsTableView.getItems().clear();
+		NutriByte.view.servingSizeLabel.setText("");
+		NutriByte.view.householdSizeLabel.setText("");
+		NutriByte.view.servingUom.setText("");
+		NutriByte.view.householdServingUom.setText("");
+		NutriByte.view.productNutrientsTableView.getItems().clear();
+		NutriByte.view.dietProductsTableView.getItems().clear();
+		NutriByte.view.nutriChart.clearChart();
 	}
 }
