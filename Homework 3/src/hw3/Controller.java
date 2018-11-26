@@ -42,19 +42,19 @@ public class Controller {
 			String ingredientsToWatch = NutriByte.view.ingredientsToWatchTextArea.getText();
 			
 			//Create Male or Female object based on input
-			Person person;
 			if(gender.equalsIgnoreCase("male")) {
-				person = new Male(age, weight, height, physicalActivityLevel, ingredientsToWatch);
+				NutriByte.person = new Male(age, weight, height, physicalActivityLevel, ingredientsToWatch);
 			}
 			else {
-				person = new Female(age, weight, height, physicalActivityLevel, ingredientsToWatch);
+				NutriByte.person = new Female(age, weight, height, physicalActivityLevel, ingredientsToWatch);
 			}
 			
-			NutriByte.person = person;	
-			
 			//Create NutriProfile and populate TableView
-			NutriProfiler.createNutriProfile(person);
-			NutriByte.view.recommendedNutrientsTableView.setItems(person.recommendedNutrientsList);
+			NutriProfiler.createNutriProfile(NutriByte.person);
+			NutriByte.view.recommendedNutrientsTableView.setItems(NutriByte.person.recommendedNutrientsList);
+			
+			NutriByte.person.populateDietNutrientMap();
+			NutriByte.view.nutriChart.updateChart();
 		}			
 	}
 
@@ -139,6 +139,8 @@ public class Controller {
 			
 			FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save Profile");
+            fileChooser.setInitialDirectory(new File(NutriByte.NUTRIBYTE_PROFILE_PATH));
+            fileChooser.getExtensionFilters().add(new ExtensionFilter("CSV File", "*.csv"));
             File file = fileChooser.showSaveDialog(new Stage());
             
             if(file == null) return;

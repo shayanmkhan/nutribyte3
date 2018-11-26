@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -61,6 +62,7 @@ public class NutriByte extends Application{
 		setupBindings();
 		stage.setTitle("NutriByte 2.0");
 		stage.setScene(scene);
+		stage.getIcons().add(new Image(NUTRIBYTE_IMAGE_FILE));
 		stage.show();
 	}
 
