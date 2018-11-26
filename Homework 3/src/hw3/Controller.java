@@ -23,35 +23,19 @@ public class Controller {
 	class RecommendNutrientsButtonHandler implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent event) {
-			//If gender is not selected, do nothing
-			if(NutriByte.view.genderComboBox.getValue() == null) {
-				return;
-			}
+			if(validatePersonData() == false) return;
 			
-			//Set values to 0 by default
-			float age = 0;
-			float weight = 0;
-			float height = 0;
+			String gender = NutriByte.view.genderComboBox.getValue();
+			float age = Float.parseFloat(NutriByte.view.ageTextField.getText());
+			float weight = Float.parseFloat(NutriByte.view.weightTextField.getText());
+			float height = Float.parseFloat(NutriByte.view.heightTextField.getText());
 			
-			//Set values only if they are entered
-			if(NutriByte.view.ageTextField.getText().length() != 0) {
-				age = Float.parseFloat(NutriByte.view.ageTextField.getText());
-			}
-			if(NutriByte.view.weightTextField.getText().length() != 0) {
-				weight = Float.parseFloat(NutriByte.view.weightTextField.getText());
-			}
-			if(NutriByte.view.heightTextField.getText().length() != 0) {
-				height = Float.parseFloat(NutriByte.view.heightTextField.getText());
-			}
-			
-			//Set physical activity level to corresponding value in PhysicalActivityEnum. Set to "sedentary" by default.
+			//Set physical activity level to corresponding value in PhysicalActivityEnum.
 			float physicalActivityLevel = 1;
-			if(NutriByte.view.physicalActivityComboBox.getValue() != null) {
-				String activitySelection = NutriByte.view.physicalActivityComboBox.getValue();
-				for(NutriProfiler.PhysicalActivityEnum activityLevel : NutriProfiler.PhysicalActivityEnum.values()) {
-					if(activityLevel.getName().equals(activitySelection)) {
-						physicalActivityLevel = activityLevel.getPhysicalActivityLevel();
-					}
+			String activitySelection = NutriByte.view.physicalActivityComboBox.getValue();
+			for(NutriProfiler.PhysicalActivityEnum activityLevel : NutriProfiler.PhysicalActivityEnum.values()) {
+				if(activityLevel.getName().equals(activitySelection)) {
+					physicalActivityLevel = activityLevel.getPhysicalActivityLevel();
 				}
 			}
 			
@@ -59,7 +43,7 @@ public class Controller {
 			
 			//Create Male or Female object based on input
 			Person person;
-			if(NutriByte.view.genderComboBox.getValue().toUpperCase().equals("MALE")) {
+			if(gender.equalsIgnoreCase("male")) {
 				person = new Male(age, weight, height, physicalActivityLevel, ingredientsToWatch);
 			}
 			else {
