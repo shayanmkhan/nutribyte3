@@ -108,6 +108,51 @@ public class NutriByte extends Application{
 			}
 		});
 		
+		view.genderComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+			updateRecommendedNutrientsTable();
+		});
+		
+		view.ageTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+			if(newValue.length() > 0) {
+				if(validateAge() == false) {
+					view.ageTextField.setStyle("-fx-text-fill: red;");
+				}
+				else {
+					view.ageTextField.setStyle("-fx-text-fill: black;");
+					updateRecommendedNutrientsTable();
+				}
+			}
+			
+		});
+		
+		view.weightTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+			if(newValue.length() > 0) {
+				if(validateWeight() == false) {
+					view.weightTextField.setStyle("-fx-text-fill: red;");
+				}
+				else {
+					view.weightTextField.setStyle("-fx-text-fill: black;");
+					updateRecommendedNutrientsTable();
+				}
+			}
+		});
+		
+		view.heightTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+			if(newValue.length() > 0) {
+				if(validateHeight() == false) {
+					view.heightTextField.setStyle("-fx-text-fill: red;");
+				}
+				else {
+					view.heightTextField.setStyle("-fx-text-fill: black;");
+					updateRecommendedNutrientsTable();
+				}
+			}
+		});
+		
+		view.physicalActivityComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+			updateRecommendedNutrientsTable();
+		});
+		
 	}
 	
 	//Callbacks for custom cell value factories
@@ -180,4 +225,83 @@ public class NutriByte extends Application{
 		
 	};
 	
+	boolean validateAge() {
+		try {
+			String ageText = view.ageTextField.getText();
+			if(ageText.length() == 0) throw new Exception();
+			
+			float age = Float.parseFloat(ageText);
+			if(age <= 0) throw new Exception();
+			
+			return true;
+			
+		} catch(Exception e) {
+			return false;
+		}
+	}
+	
+	boolean validateWeight() {
+		try {
+			String weightText = view.weightTextField.getText();
+			if(weightText.length() == 0) throw new Exception();
+			
+			float weight = Float.parseFloat(weightText);
+			if(weight <= 0) throw new Exception();
+			
+			return true;
+			
+		} catch(Exception e) {
+			return false;
+		}
+	}
+	
+	boolean validateHeight() {
+		try {
+			String heightText = view.heightTextField.getText();
+			if(heightText.length() == 0) throw new Exception();
+			
+			float height = Float.parseFloat(heightText);
+			if(height <= 0) throw new Exception();
+			
+			return true;
+			
+		} catch(Exception e) {
+			return false;
+		}
+	}
+	
+	void updateRecommendedNutrientsTable() {
+		if(view.genderComboBox.getValue() != null && validateAge() && validateWeight() && validateHeight()) {
+			String gender = NutriByte.view.genderComboBox.getValue();
+			float age = Float.parseFloat(NutriByte.view.ageTextField.getText());
+			float weight = Float.parseFloat(NutriByte.view.weightTextField.getText());
+			float height = Float.parseFloat(NutriByte.view.heightTextField.getText());
+			
+			//Set physical activity level to corresponding value in PhysicalActivityEnum.
+			float physicalActivityLevel = 1;
+			String activitySelection = NutriByte.view.physicalActivityComboBox.getValue();
+			for(NutriProfiler.PhysicalActivityEnum activityLevel : NutriProfiler.PhysicalActivityEnum.values()) {
+				if(activityLevel.getName().equals(activitySelection)) {
+					physicalActivityLevel = activityLevel.getPhysicalActivityLevel();
+				}
+			}
+			
+			String ingredientsToWatch = NutriByte.view.ingredientsToWatchTextArea.getText();
+			
+			//Create Male or Female object based on input
+			if(gender.equalsIgnoreCase("male")) {
+				NutriByte.person = new Male(age, weight, height, physicalActivityLevel, ingredientsToWatch);
+			}
+			else {
+				NutriByte.person = new Female(age, weight, height, physicalActivityLevel, ingredientsToWatch);
+			}
+			
+			//Create NutriProfile and populate TableView
+			NutriProfiler.createNutriProfile(NutriByte.person);
+			NutriByte.view.recommendedNutrientsTableView.setItems(NutriByte.person.recommendedNutrientsList);
+			
+			NutriByte.person.populateDietNutrientMap();
+			NutriByte.view.nutriChart.updateChart();
+		}
+	}
 }

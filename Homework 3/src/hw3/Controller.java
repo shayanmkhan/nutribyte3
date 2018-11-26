@@ -314,9 +314,9 @@ public class Controller {
 				NutriByte.person.dietProductsList.add(dietProduct);
 			}
 			
-			NutriByte.person.populateDietNutrientMap();
-			
 			NutriByte.view.dietProductsTableView.setItems(NutriByte.person.dietProductsList);
+			
+			NutriByte.person.populateDietNutrientMap();
 			NutriByte.view.nutriChart.updateChart();
 		}
 	}
