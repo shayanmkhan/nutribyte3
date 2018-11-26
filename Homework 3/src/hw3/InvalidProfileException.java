@@ -5,6 +5,7 @@ package hw3;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.Region;
 
 @SuppressWarnings("serial")
 public class InvalidProfileException extends RuntimeException{
@@ -13,7 +14,8 @@ public class InvalidProfileException extends RuntimeException{
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setHeaderText("Profile Data Error" );
 		alert.setTitle("NutriByte 3.0");
-		alert.setContentText(message );
+		alert.setContentText(message);
+		alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 		alert.showAndWait();
 	}
 }
