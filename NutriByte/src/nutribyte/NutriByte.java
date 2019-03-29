@@ -1,9 +1,8 @@
 //Name: Shayan Khan
 //AndrewID: shayank
 
-package hw3;
+package nutribyte;
 
-import hw3.Product.ProductNutrient;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -21,6 +20,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import nutribyte.Product.ProductNutrient;
 
 public class NutriByte extends Application{
 	static Model model = new Model();  	//made static to make accessible in the controller

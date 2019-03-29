@@ -1,9 +1,11 @@
-package hw3;
+package nutribyte;
 
 import static org.junit.Assert.*;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import nutribyte.Model;
 
 public class TestModelFullSet {
 

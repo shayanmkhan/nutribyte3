@@ -1,7 +1,7 @@
 //Name: Shayan Khan
 //AndrewID: shayank
 
-package hw3;
+package nutribyte;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

@@ -1,9 +1,15 @@
-package hw3;
+package nutribyte;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import nutribyte.Female;
+import nutribyte.Male;
+import nutribyte.Model;
+import nutribyte.NutriProfiler;
+import nutribyte.Person;
 
 public class TestNutriRecommendations {
 	

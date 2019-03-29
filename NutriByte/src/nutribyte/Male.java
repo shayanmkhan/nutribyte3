@@ -1,7 +1,7 @@
 //Name: Shayan Khan
 //AndrewID: shayank
 
-package hw3;
+package nutribyte;
 
 public class Male extends Person{
 	float[][] nutriConstantsTableMale = new float[][]{

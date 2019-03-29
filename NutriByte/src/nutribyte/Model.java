@@ -1,7 +1,7 @@
 //Name: Shayan Khan
 //AndrewID: shayank
 
-package hw3;
+package nutribyte;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

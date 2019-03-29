@@ -1,4 +1,4 @@
-package hw3;
+package nutribyte;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package hw3;
+package nutribyte;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,9 @@ import java.util.Map;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import nutribyte.Model;
+import nutribyte.Product;
 
 public class TestModelNutri2Data {
 

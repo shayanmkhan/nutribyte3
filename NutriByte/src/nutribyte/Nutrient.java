@@ -1,7 +1,7 @@
 //Name: Shayan Khan
 //AndrewID: shayank
 
-package hw3;
+package nutribyte;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
