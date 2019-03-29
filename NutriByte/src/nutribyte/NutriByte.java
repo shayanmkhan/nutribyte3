@@ -60,7 +60,7 @@ public class NutriByte extends Application{
 		Scene scene = new Scene (view.root, NUTRIBYTE_SCREEN_WIDTH, NUTRIBYTE_SCREEN_HEIGHT);
 		view.root.requestFocus();  //this keeps focus on entire window and allows the textfield-prompt to be visible
 		setupBindings();
-		stage.setTitle("NutriByte 2.0");
+		stage.setTitle("NutriByte 3.0");
 		stage.setScene(scene);
 		stage.getIcons().add(new Image(NUTRIBYTE_IMAGE_FILE));
 		stage.show();
